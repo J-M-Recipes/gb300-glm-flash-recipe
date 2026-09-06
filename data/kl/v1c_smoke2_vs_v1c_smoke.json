@@ -1,0 +1,1 @@
+{"A": "v1c_smoke2", "B_ref": "v1c_smoke", "positions": 2046, "mean_abs_dlp": 0.0, "p99_abs_dlp": 0.0, "p999_abs_dlp": 0.0, "max_abs_dlp": 0.0, "top1_disagree_rate": 0.0, "top1_disagree_n": 0, "mean_tkl20": 0.0, "p999_tkl20": 0.0, "max_tkl20": 0.0, "per_cat": {"prose": {"n": 2046, "mean_abs_dlp": 0.0, "top1_disagree_rate": 0.0, "max_abs_dlp": 0.0}}}

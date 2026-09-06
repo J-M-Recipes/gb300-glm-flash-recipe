@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://raw.githubusercontent.com/vllm-project/recipes/main/README.md",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 2,
+      "url": "https://raw.githubusercontent.com/vllm-project/recipes/main/DeepSeek/DeepSeek-V3_2.md",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 3,
+      "url": "https://raw.githubusercontent.com/NVIDIA/dgx-spark-playbooks/main/README.md",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 4,
+      "url": "https://raw.githubusercontent.com/NVIDIA/dgx-spark-playbooks/main/nvidia/connect-two-sparks/README.md",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 5,
+      "url": "https://raw.githubusercontent.com/mlcommons/policies/master/submission_rules.adoc",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 6,
+      "url": "https://raw.githubusercontent.com/mlperf/inference_policies/master/inference_rules.adoc",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 7,
+      "url": "https://huggingface.co/nvidia/GLM-5.2-NVFP4/raw/main/README.md",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 8,
+      "url": "https://raw.githubusercontent.com/vllm-project/recipes/main/CONTRIBUTING.md",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 9,
+      "url": "https://docs.mlcommons.org/inference/submission/submission-cli",
+      "title": "",
+      "accessed": "2026-09-06"
+    },
+    {
+      "id": 10,
+      "url": "https://neurips.cc/public/guides/PaperChecklist",
+      "title": "",
+      "accessed": "2026-09-06"
+    }
+  ]
+}
