@@ -1,5 +1,7 @@
 # GLM-5.3-Flash on a single DGX Station GB300 — 234 tok/s serving recipe
 
+> **⚠️ HISTORICAL PUBLICATION (frozen 2026-09-06).** This repo documents the 2026-09-01/02 measurement round on the pre-rebase image and is kept for its failure ledger and history. **Three headline claims here were later overturned and are corrected in place below:** (1) the 234.2 tok/s C1 headline is **not** the current recipe-method number (answer-only, `reasoning_effort: low`, SGLang v0.5.20: **~202 tok/s**); (2) DFlash2 is **target-verified, not byte-identical** to autoregressive decoding — "verified-lossless" is retracted; (3) **"AR wins at C16+" was an artifact** of SGLang's default KDA state budget capping running requests at 7 — with slots raised, DFlash2 wins per running request through at least C24. **Canonical successors (measured, gated, with cards): [`J-M-Recipes/recipes` → `glm-5.3-flash-nvfp4-dflash2`](https://github.com/J-M-Recipes/recipes/tree/main/recipes/dgx-station-gb300/glm-5.3-flash-nvfp4-dflash2)** (this Flash lane) **and [`glm-5.3-nvfp4-uva-slot-cache`](https://github.com/J-M-Recipes/recipes/tree/main/recipes/dgx-station-gb300/glm-5.3-nvfp4-uva-slot-cache)** (full GLM-5.3). Corrections recorded 2026-09-23.
+
 A complete, reproducible recipe for serving **GLM-5.3-Flash** (355B-class MoE) on one
 NVIDIA DGX Station GB300 at **234 tok/s single-stream** with **DFlash2 speculative
 decoding** — plus honest benchmarks, the failure ledger that got us here, and the
@@ -35,7 +37,7 @@ shapes — see the warmup section; first hit per prompt size pays ~16 s of autot
 
 KV cache: FP8, 2.72M-token capacity. DFlash2 accept length observed 2.77–3.95 on prose.
 
-**Rule of thumb: DFlash2 for interactive (C1–C8), plain AR for batch (C16+).**
+~~**Rule of thumb: DFlash2 for interactive (C1–C8), plain AR for batch (C16+).**~~ **CORRECTED 2026-09-21** (bundle: [`results/2026-09-21-v0520-rebase`](https://github.com/J-M-Recipes/recipes/tree/main/recipes/dgx-station-gb300/glm-5.3-flash-nvfp4-dflash2/results/2026-09-21-v0520-rebase) in the monorepo): the "AR wins at C16+" crossover was an artifact of SGLang's default KDA state budget capping `max_running_requests` at 7 — verification cost was not the issue. With slots raised, DFlash2 beats AR per running request through at least C24 (1,482 vs ~1,350 agg). What DFlash2 loses is memory (each slot carries fp32 draft intermediate state): **pick DFlash2 for ≤24 users, AR for more.**
 
 For reference, [catid/dgx_station_benchmarks](https://github.com/catid/dgx_station_benchmarks)
 publishes 187.1 tok/s C1 (DFlash2) and 964.9 agg C16 (AR) on the same silicon — this
@@ -188,10 +190,10 @@ Consequences:
 ![DFlash2 flow](diagrams/dflash2-flow.svg)
 
 The ~1B draft model proposes an 8-token block per step (block diffusion + path
-selector); the target verifies the block in one forward pass. Verified-lossless —
-output distribution identical to AR. With accept lengths of ~3, the target amortizes
-one forward pass across ~3 emitted tokens → the C1 win. At high concurrency the
-verification passes compete with batch decode capacity, so AR overtakes at C16+.
+selector); the target verifies the block in one forward pass. ~~Verified-lossless —
+output distribution identical to AR.~~ **CORRECTED 2026-09-21: target-verified — every emitted token is accepted by the full model — but NOT byte-identical to AR on GLM-5.3-Flash (DFlash vs AR agree 1/20 at 200 tokens, 0/8 at 2,500, while teacher-forced logprobs of either text are identical: argmax tie-breaking in the verify kernel, not a quality change).** With accept lengths of ~3, the target amortizes
+one forward pass across ~3 emitted tokens → the C1 win. ~~At high concurrency the
+verification passes compete with batch decode capacity, so AR overtakes at C16+.~~ **CORRECTED 2026-09-21: that crossover was the KDA slot-cap artifact described above, not verification cost.**
 
 ## Benchmarks: reproduce them
 
